@@ -531,7 +531,7 @@ int Checkerboard::checkLeftDown(int PosX, int PosY){
 	 }
 	 else{
 		 if (!isFinished)
-			logHandler("YOU SUCK!");
+			logHandler("你不可以下這裡\n");
 	 }
  };
 
@@ -709,13 +709,13 @@ string Checkerboard ::toString(void){
 		result += "○";
 	}
 
-	result += "\t\t\t\t\t 移動 : ←↑↓→\n";
+	result += "\t\t\t\t\t\t 移動 : ←↑↓→\n";
 
 	result += "● : " + std::to_string(blackCount) + "";
-	result += "\t\t\t\t\t\t\t 反悔上一步 : Backspace\n";
+	result += "\t\t\t\t\t\t\t 反悔上一步(undo) : Backspace\n";
 
 	result += "○ : " + std::to_string(whiteCount);
-	result += "\t\t\t\t\t\t\t 恢復下一步 : Tab\n";
+	result += "\t\t\t\t\t\t\t 恢復下一步(redo) : Tab\n";
 	
 	result += "\t\t\t\t\t\t\t 重開遊戲 : Home\n";
 	result += "\t\t\t\t\t\t\t 下棋 : Enter\n";
@@ -726,6 +726,7 @@ string Checkerboard ::toString(void){
 
 void Checkerboard::clearLog(void){
 	Log = "";
+	showedLog = "";
 };
 
 void Checkerboard::checkFinished(void){
@@ -740,10 +741,12 @@ void Checkerboard::logHandler(std::string log){
 	Log += log;
 };
 std::string Checkerboard::showLog(){
-	showedLog = Log;
+	if (Log != showedLog && Log != ""){
+		showedLog = Log;
+	}
 
 	if (showedLog != ""){
-		return "Message : \n" + showedLog;
+		return "提示 : \n" + showedLog;
 	}
 	else {
 		return  "";
