@@ -21,6 +21,12 @@ Checkerboard::Checkerboard(void){
 	initializeCheckerBoard();
 }
  void Checkerboard ::initializeCheckerBoard(void){
+	 isFinished = false;
+
+	 currentPosition[0] = 0;
+	 currentPosition[1] = 0;
+	 blackCount = 2;
+	 whiteCount = 2;
 	 Log = "";
 	 showedLog = "";
 	 chessManualIndex = -1;
@@ -500,6 +506,8 @@ int Checkerboard::checkLeftDown(int PosX, int PosY){
  };
 
  void Checkerboard::setChess(int PosX, int PosY){
+	 clearLog();
+
 	 if (checkLegal(PosX, PosY)){
 		 if (currentChess == chess::blackChess){
 			 // set value
@@ -522,7 +530,8 @@ int Checkerboard::checkLeftDown(int PosX, int PosY){
 		 }
 	 }
 	 else{
-		 Log = "你不能下這裡";
+		 if (!isFinished)
+			logHandler("YOU SUCK!");
 	 }
  };
 
@@ -568,6 +577,10 @@ int Checkerboard::checkLeftDown(int PosX, int PosY){
 		 }
 		 else if (currentChess == chess::blackChess){
 			 currentChess = chess::whiteChess;
+		 }
+
+		 if (checkPass()){
+			 isFinished = true;
 		 }
 	 }
 
@@ -627,7 +640,7 @@ int Checkerboard::checkLeftDown(int PosX, int PosY){
  };
 
 string Checkerboard ::toString(void){
-	if (checkFinished()){
+	if (isFinished){
 		if (whiteCount > blackCount){
 			logHandler("○ WIN !!!!!!!!!!!");
 		}
@@ -688,19 +701,24 @@ string Checkerboard ::toString(void){
 	}
 	result += "╚════════╝\n";
 	result += "\n";
-	result += "Current chess : ";
+	result += "現在下棋方 : ";
 	if (currentChess == chess::blackChess){
 		result += "●";
 	}
 	else if (currentChess == chess::whiteChess){
 		result += "○";
 	}
-	result += "\n";
-	result += "step : "+std::to_string(step) +"\n";
-	result += "chessManualIndex : " + std::to_string(chessManualIndex) + "\n";
-	result += "● : " + std::to_string(blackCount) + "\n";
-	result += "○ : " + std::to_string(whiteCount) + "\n";
+
+	result += "\t\t\t\t\t 移動 : ←↑↓→\n";
+
+	result += "● : " + std::to_string(blackCount) + "";
+	result += "\t\t\t\t\t\t\t 反悔上一步 : Backspace\n";
+
+	result += "○ : " + std::to_string(whiteCount);
+	result += "\t\t\t\t\t\t\t 恢復下一步 : Tab\n";
 	
+	result += "\t\t\t\t\t\t\t 重開遊戲 : Home\n";
+	result += "\t\t\t\t\t\t\t 下棋 : Enter\n";
 	result += showLog();
 	result += "\n";
 	return result;
@@ -710,11 +728,11 @@ void Checkerboard::clearLog(void){
 	Log = "";
 };
 
-bool Checkerboard::checkFinished(void){
+void Checkerboard::checkFinished(void){
 	if (step >= 60){
-		return true;
+		isFinished = true;
 	}else{
-		return false;
+		isFinished = false;
 	}
 };
 
@@ -722,11 +740,7 @@ void Checkerboard::logHandler(std::string log){
 	Log += log;
 };
 std::string Checkerboard::showLog(){
-	if (Log != showedLog && Log != ""){
-		showedLog = Log;
-	}
-
-	clearLog();
+	showedLog = Log;
 
 	if (showedLog != ""){
 		return "Message : \n" + showedLog;

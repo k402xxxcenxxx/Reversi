@@ -65,7 +65,7 @@ public:
 
 	bool checkLegal(int PosX,int PosY);//check if legal
 
-	bool checkFinished(void);
+	void checkFinished(void);
 
 	std::string Log;
 	std::string showedLog;

@@ -53,6 +53,10 @@ void KeyDownEvent( WPARAM wParam )
 		paint();
 	}
 
+	if (wParam == VK_HOME){
+		myCheckerBroad->initializeCheckerBoard();
+	}
+
 	//==== 英文字母或數字 ====//
 	switch( wParam )
 	{
@@ -72,15 +76,8 @@ void KeyDownEvent( WPARAM wParam )
 	case 0x0D://enter
 		myCheckerBroad->setChess(myCheckerBroad->currentPosition[0], myCheckerBroad->currentPosition[1]);
 		break;
-	case 'a':
-	case 'A':
-		cout << "A Down" << endl;
-		break;
-	case 's':
-		case 'S':
-		cout<<"S"<<endl;
-		break;
 	}
+
 }
 
 void KeyUpEvent( WPARAM wParam )
