@@ -13,23 +13,20 @@ class Checkerboard : public Reversi{
 public:
 	Checkerboard(void);
 
-	enum piece{
-		blackPiece = 0,
-		whitePiece = 1
+	enum chess{
+		blackChess = 0,
+		whiteChess = 1
 	};
 	enum InfoValue{
 		none = 0,
 		black = -1,
 		white = 1,
-		selected = 2,
-		selectedOnBlack = -3,
-		selectedOnWhite = 3,
 		hint = 4,
 		error = 99
 	};
 
 	int sideLength;
-	piece currentPiece;
+	chess currentChess;
 	int blackCount;
 	int whiteCount;
 
@@ -39,16 +36,24 @@ public:
 
 	void initializeCheckerBoard(void);
 
-	InfoValue getCheckerboardInfo(int x,int y);
-	void setCheckerboardInfo(int x,int y,InfoValue value);
+	void setCheckerboardInfo(int PosX,int PosY,InfoValue value);
 
 	void cursorMove(int input);//0 = left,1 = up,2 = down,3 = right
 
 	void undo(void);
 	void redo(void);
 
-	int checkRow(int rowNum);//return the position
-	int checkColumn(int columnNum);
+	int checkRight(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkLeft(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkUp(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkDown(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkRightUp(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkRightDown(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkLeftUp(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+	int checkLeftDown(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
+
+	bool checkLegal(int PosX,int PosY);//check if legal
+
 	bool checkFinished(void);
 	std::string toString(void);
 };
