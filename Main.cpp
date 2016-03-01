@@ -32,6 +32,7 @@ void clear() {
 
 void paint(void){
 		clear();
+		
 		cout<<myCheckerBroad->toString()<<endl;
 }
 
@@ -41,6 +42,15 @@ void KeyDownEvent( WPARAM wParam )
 	if( wParam == VK_TAB )
 	{
 		cout << "Tab Down" << endl;
+		myCheckerBroad->redo();
+		paint();
+	}
+
+	if (wParam == 0x08)// Process a backspace.
+	{
+		cout << "back Down" << endl;
+		myCheckerBroad->undo();
+		paint();
 	}
 
 	//==== 英文字母或數字 ====//
@@ -57,6 +67,10 @@ void KeyDownEvent( WPARAM wParam )
 		break;
 	case  VK_DOWN:
 		myCheckerBroad->cursorMove(2);
+		break;
+
+	case 0x0D://enter
+		myCheckerBroad->setChess(myCheckerBroad->currentPosition[0], myCheckerBroad->currentPosition[1]);
 		break;
 	case 'a':
 	case 'A':
@@ -159,6 +173,8 @@ LRESULT CALLBACK WindowProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam 
 
 	case WM_KEYDOWN:
 		KeyDownEvent( wParam );
+		InvalidateRect(hwnd, NULL, TRUE);
+		UpdateWindow(hwnd);
 		break;
 
 	case WM_KEYUP:

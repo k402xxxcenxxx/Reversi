@@ -25,23 +25,34 @@ public:
 		error = 99
 	};
 
+	bool isFinished;
+
 	int sideLength;
 	chess currentChess;
 	int blackCount;
 	int whiteCount;
 
+	int step;
+
 	int currentPosition[2];//[0] is x,[1] is y
 
 	InfoValue checkerboardInfo[8][8];
+	InfoValue chessManual[64][8][8];
+	chess chessRecord[64];
+	int chessManualIndex;
 
 	void initializeCheckerBoard(void);
 
 	void setCheckerboardInfo(int PosX,int PosY,InfoValue value);
+	void setChess(int PosX, int PosY);
 
 	void cursorMove(int input);//0 = left,1 = up,2 = down,3 = right
 
+	void saveCurrentChessManual(void);
+
 	void undo(void);
 	void redo(void);
+	bool checkPass(void);
 
 	int checkRight(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
 	int checkLeft(int PosX, int PosY);//return gain chesss. if it returns less than 0, means it's not legal
@@ -55,10 +66,14 @@ public:
 	bool checkLegal(int PosX,int PosY);//check if legal
 
 	bool checkFinished(void);
+
+	std::string Log;
+	std::string showedLog;
+	void logHandler(std::string log);
+	std::string showLog();
+	void clearLog(void);
+
 	std::string toString(void);
 };
 
-class Direction : Reversi{
-public:
-	Direction();
-};
+
